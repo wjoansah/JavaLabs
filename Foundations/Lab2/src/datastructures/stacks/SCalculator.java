@@ -1,5 +1,7 @@
 package datastructures.stacks;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class SCalculator {
@@ -28,13 +30,19 @@ public class SCalculator {
     public static int evaluateExpression(String expression) {
         Stack<Integer> stack = new Stack<>();
 
+        Map<String, Character> operatorMap = new HashMap<>();
+
+        operatorMap.put("addition", '+');
+        operatorMap.put("subtraction", '-');
+        operatorMap.put("multiplication", '*');
+        operatorMap.put("division", '/');
+
         for (int i = 0; i < expression.length(); i++) {
             char ch = expression.charAt(i);
 
             if (Character.isDigit(ch)) {
                 stack.push(ch - '0');
-            }
-            else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            } else if (operatorMap.values().contains(ch)) {
                 if (stack.size() < 2) {
                     throw new IllegalArgumentException("Invalid expression");
                 }
