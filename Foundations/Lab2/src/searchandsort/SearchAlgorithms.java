@@ -30,18 +30,20 @@ public class SearchAlgorithms {
     }
 
     public static void main(String[] args) {
-        Integer[] array = {10, 20, 30, 40, 50, 60};
-        int target = 40;
+        Integer[] array = { 30, 60, 120, 10, 80, 350, 40, 20, 50 };
+        Integer[] sortedArray = { 10, 20, 30, 40, 50, 60, 80, 120 };
+        int target = 10;
 
         int result = linearSearch(array, target);
-        int binarySearchResult = binarySearch(array, 60);
+        int binarySearchResult = binarySearch(sortedArray, target);
+
+        System.out.println("searching for " + target);
 
         if (result != -1) {
             System.out.println("Element found with linear search at index: " + result);
         } else {
             System.out.println("Element not found");
         }
-
 
         if (binarySearchResult != -1) {
             System.out.println("Element found with binary search at index: " + binarySearchResult);
