@@ -32,7 +32,8 @@ public class MortgageCalculator {
         var monthlyInterestRate = calculateMonthlyInterest(annualInterestRate);
         var numberOfPayments = calculateNumberOfPayments(years);
 
-        var mortgage = (principal * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1));
+        var mortgage = (principal * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))
+                / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1));
         return NumberFormat.getCurrencyInstance().format(mortgage);
     }
 
@@ -53,7 +54,6 @@ public class MortgageCalculator {
         return value;
     }
 
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -63,6 +63,8 @@ public class MortgageCalculator {
 
         byte years = (byte) getInput("Period(Years): ", scanner, 0, Byte.MAX_VALUE);
 
+        // the mortgage calculation logic is encapsulated in the `MortgageCalculator` class
+        // and the values are required are supplied when instantiating a new mortgage calculator
         var calculator = new MortgageCalculator(principal, annualInterestRate, years);
 
         float monthlyInterest = calculator.calculateMonthlyInterest(annualInterestRate);
@@ -73,7 +75,6 @@ public class MortgageCalculator {
 
         var mortgage = calculator.calculateMortgage();
         System.out.println("mortgage: " + mortgage);
-
 
         scanner.close();
     }
