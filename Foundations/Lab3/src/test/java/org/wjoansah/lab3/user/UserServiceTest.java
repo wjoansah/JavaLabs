@@ -115,6 +115,91 @@ class UserServiceTest {
     }
 
     @Test
-    void updateUser_ShouldUpdateUser() {
+    void updateUser_WhenUserExists_ShouldUpdateUserDetails() {
+        // Arrange
+        String email = "user@example.com";
+        var existingUser = new User(email);
+        existingUser.setName("Old Name");
+        existingUser.setPhoneNumber("1234567890");
+
+        User updateUser = new User(email);
+        updateUser.setName("New Name");
+        updateUser.setPhoneNumber("0987654321");
+
+        when(userRepository.getUserByEmail(email)).thenReturn(existingUser);
+
+        var userService = new UserService(userRepository);
+
+        // Act
+        userService.updateUser(email, updateUser);
+
+        // Assert
+        assertEquals("New Name", existingUser.getName());
+        assertEquals("0987654321", existingUser.getPhoneNumber());
+        verify(userRepository).getUserByEmail(email);
+    }
+
+    @Test
+    void updateUser_WhenUserDoesNotExist_ShouldThrowException() {
+        // Arrange
+        String email = "nonexistentuser@example.com";
+        User updateUser = new User(email);
+
+        when(userRepository.getUserByEmail(email)).thenReturn(null);
+
+        var userService = new UserService(userRepository);
+
+        // Act & Assert
+        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> userService.updateUser(email, updateUser));
+        assertEquals("User does not exist", thrown.getMessage());
+        verify(userRepository).getUserByEmail(email);
+    }
+
+    @Test
+    void updateUser_WhenUserNameIsNull_ShouldNotUpdateName() {
+        // Arrange
+        String email = "user@example.com";
+        User existingUser = new User(email);
+        existingUser.setName("Old Name");
+        existingUser.setPhoneNumber("1234567890");
+
+        User updateUser = new User(email);
+        updateUser.setPhoneNumber("0987654321");
+
+        when(userRepository.getUserByEmail(email)).thenReturn(existingUser);
+
+        var userService = new UserService(userRepository);
+
+        // Act
+        userService.updateUser(email, updateUser);
+
+        // Assert
+        assertEquals("Old Name", existingUser.getName()); // Name should remain unchanged
+        assertEquals("0987654321", existingUser.getPhoneNumber());
+        verify(userRepository).getUserByEmail(email);
+    }
+
+    @Test
+    void updateUser_WhenUserPhoneNumberIsNull_ShouldNotUpdatePhoneNumber() {
+        // Arrange
+        String email = "user@example.com";
+        User existingUser = new User(email);
+        existingUser.setName("Old Name");
+        existingUser.setPhoneNumber("1234567890");
+
+        User updateUser = new User(email);
+        updateUser.setName("New Name");
+
+        when(userRepository.getUserByEmail(email)).thenReturn(existingUser);
+
+        var userService = new UserService(userRepository);
+
+        // Act
+        userService.updateUser(email, updateUser);
+
+        // Assert
+        assertEquals("New Name", existingUser.getName());
+        assertEquals("1234567890", existingUser.getPhoneNumber()); // Phone number should remain unchanged
+        verify(userRepository).getUserByEmail(email);
     }
 }
