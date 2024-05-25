@@ -11,6 +11,10 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public User(String email) {
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }
