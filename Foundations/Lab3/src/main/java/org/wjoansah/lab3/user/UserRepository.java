@@ -3,9 +3,9 @@ package org.wjoansah.lab3.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 public class UserRepository {
     private final List<User> users;
 
