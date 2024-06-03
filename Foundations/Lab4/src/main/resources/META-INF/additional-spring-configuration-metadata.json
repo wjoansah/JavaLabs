@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "welcome.message",
+      "type": "java.lang.String",
+      "description": "Message to print on application start up"
+  }
+] }
