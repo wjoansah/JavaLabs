@@ -1,31 +1,50 @@
 package org.wjoansah.lab5.user;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private ModelMapper mapper = new ModelMapper();
 
     @Override
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    @Transactional
     @Override
-    public void createUser(UserCreateRequest createRequest) {
+    public Optional<User> createUser(UserCreateRequest createRequest) {
         var user = User.builder()
                 .name(createRequest.getName())
                 .email(createRequest.getEmail())
-                .password(createRequest.getPassword())
+                .password(passwordEncoder.encode(createRequest.getPassword()))
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
+
+        return userRepository.findByEmail(createRequest.getEmail());
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        var users = userRepository.findAll();
+        List<UserResponse> response =
+                users.stream()
+                        .map(u -> mapper.map(u, UserResponse.class))
+                        .collect(Collectors.toList());
+
+
+        return response;
     }
 }
