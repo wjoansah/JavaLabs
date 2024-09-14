@@ -11,19 +11,23 @@ pipeline {
     stages {
         // get source from repo*
         stage("checkout code from vcs") {
-            checkout scmGit(
-                    branches: [[name: 'main']],
-                    extensions: [
-                            sparseCheckout(sparseCheckoutPaths:
-                            [[path: 'Intermediate/IL-Lab3/ex-3-microservices'],
-                            [path: 'Intermediate/IL-Lab3/pom.xml']])
-                    ],
-                    userRemoteConfigs: [[url: 'https://github.com/wjoansah/JavaLabs.git']])
+            steps {
+                checkout scmGit(
+                        branches: [[name: 'main']],
+                        extensions: [
+                                sparseCheckout(sparseCheckoutPaths:
+                                [[path: 'Intermediate/IL-Lab3/ex-3-microservices'],
+                                [path: 'Intermediate/IL-Lab3/pom.xml']])
+                        ],
+                        userRemoteConfigs: [[url: 'https://github.com/wjoansah/JavaLabs.git']])
+            }
         }
         // run tests
         stage("run tests") {
             steps {
-                sh 'mvn clean test'
+                dir('Intermediate/IL-Lab3') {
+                    sh 'mvn clean test'
+                }
             }
             post {
                 success {
@@ -38,7 +42,9 @@ pipeline {
         // build artifacts
         stage("build artifacts") {
             steps {
-                sh 'mvn clean install -DskipTests'
+                dir('Intermediate/IL-Lab3') {
+                    sh 'mvn clean install -DskipTests'
+                }
             }
             post {
                 success {
@@ -53,11 +59,13 @@ pipeline {
         // build docker images
         stage("build docker image") {
             steps {
-                script {
-                    sh "docker stop ${container_name}"
-                    sh "docker rm ${container_name}"
-                    sh "docker rmi ${image_name}"
-                    sh "docker-compose -f  build -t ${image_name} --no-cache"
+                dir('Intermediate/IL-Lab3') {
+                    script {
+                        sh "docker compose stop ${container_name}"
+                        sh "docker compose rm ${container_name}"
+                        sh "docker compose rmi ${image_name}"
+                        sh "docker compose -f docker-compose.yml build -t ${image_name} --no-cache"
+                    }
                 }
             }
             post {
@@ -72,7 +80,17 @@ pipeline {
 
         // deploy to k8s*
         stage("deploy to minikube") {
-            bat 'kubectl get node'
+            steps {
+                dir('Intermediate/IL-Lab3/ex-3-microservices') {
+                    script {
+                        bat 'kubectl apply -f k8s/api-gateway/deployment.yaml'
+                        bat 'kubectl apply -f k8s/eureka-server/deployment.yaml'
+                        bat 'kubectl apply -f k8s/user-service/deployment.yaml'
+                        bat 'kubectl apply -f k8s/product-catalog-service/deployment.yaml'
+                        bat 'kubectl apply -f k8s/order-processing-service/deployment.yaml'
+                    }
+                }
+            }
         }
     }
 
