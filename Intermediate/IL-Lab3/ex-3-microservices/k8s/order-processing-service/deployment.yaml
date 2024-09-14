@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-processing-service
+  labels:
+    app: order-processing-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-processing-service
+  template:
+    metadata:
+      name: order-processing-service
+      labels:
+        app: order-processing-service
+    spec:
+      containers:
+        - name: order-processing-service
+          image: order-processing-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8083
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-processing-service
+spec:
+  selector:
+    app: order-processing-service
+  ports:
+    - port: 8083
+      targetPort: 8083
+  type: NodePort

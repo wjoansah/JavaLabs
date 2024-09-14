@@ -1,0 +1,84 @@
+def container_name = "ex3-ecomm-container"
+def image_name = "ex3-ecomm"
+def compose_path = 'Intermediate/IL-Lab3/pom.xml'
+
+pipeline {
+    agent any
+    tools {
+        maven "maven"
+    }
+
+    stages {
+        // get source from repo*
+        stage("checkout code from vcs") {
+            checkout scmGit(
+                    branches: [[name: 'main']],
+                    extensions: [
+                            sparseCheckout(sparseCheckoutPaths:
+                            [[path: 'Intermediate/IL-Lab3/ex-3-microservices'],
+                            [path: 'Intermediate/IL-Lab3/pom.xml']])
+                    ],
+                    userRemoteConfigs: [[url: 'https://github.com/wjoansah/JavaLabs.git']])
+        }
+        // run tests
+        stage("run tests") {
+            steps {
+                sh 'mvn clean test'
+            }
+            post {
+                success {
+                    echo "[tests]: successfully run all tests."
+                }
+                failure {
+                    echo "[tests]: tests run failed."
+                }
+            }
+        }
+
+        // build artifacts
+        stage("build artifacts") {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+            post {
+                success {
+                    echo "[artifacts-build]: successfully built artifacts."
+                }
+                failure {
+                    echo "[artifacts-build]: failed to build artifacts."
+                }
+            }
+        }
+
+        // build docker images
+        stage("build docker image") {
+            steps {
+                script {
+                    sh "docker stop ${container_name}"
+                    sh "docker rm ${container_name}"
+                    sh "docker rmi ${image_name}"
+                    sh "docker-compose -f  build -t ${image_name} --no-cache"
+                }
+            }
+            post {
+                success {
+                    echo "[docker-build]: successfully built docker image."
+                }
+                failure {
+                    echo "[docker-build]: failed to build docker image."
+                }
+            }
+        }
+
+        // deploy to k8s*
+        stage("deploy to minikube") {
+            bat 'kubectl get node'
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
