@@ -59,12 +59,9 @@ pipeline {
         // build docker images
         stage("build docker image") {
             steps {
-                dir('Intermediate/IL-Lab3') {
+                dir('Intermediate/IL-Lab3/ex-3-microservices') {
                     script {
-                        sh "docker stop ${container_name}"
-                        sh "docker rm ${container_name}"
-                        sh "docker rmi ${image_name}"
-                        sh "docker compose -f docker-compose.yml build -t ${image_name} --no-cache"
+                        sh "docker compose -f docker-compose.yml build --no-cache"
                     }
                 }
             }
