@@ -17,9 +17,17 @@
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>optional-modules</id>
+            <modules>
+                <module>ex-1-spring-security-jwt-auth</module>
+                <module>ex-2-spring-security-oauth2</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <modules>
-        <module>ex-1-spring-security-jwt-auth</module>
-        <module>ex-2-spring-security-oauth2</module>
         <module>ex-3-microservices</module>
     </modules>
 
