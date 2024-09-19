@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wjoansah</groupId>
-    <artifactId>ex-2-Unit-vs-Integration-Testing</artifactId>
+    <artifactId>ex-3-Integration-Testing</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ex-2-Unit-vs-Integration-Testing</name>
-    <description>ex-2-Unit-vs-Integration-Testing</description>
+    <name>ex-3-Integration-Testing</name>
+    <description>ex-3-Integration-Testing</description>
     <url/>
     <licenses>
         <license/>
@@ -37,6 +37,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>

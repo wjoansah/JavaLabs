@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+</head>
+<body>
+<h1>Products</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterating over the list of products -->
+    <tr th:each="product : ${products}">
+        <td th:text="${product.name}">Product Name</td>
+        <td th:text="${product.price}">Product Price</td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<a href="/orders">Place an Order</a>
+</body>
+</html>
