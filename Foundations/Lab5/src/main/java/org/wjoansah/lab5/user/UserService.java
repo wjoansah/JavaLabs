@@ -5,10 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.wjoansah.lab5.user.UserSpecifications.isUser;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper = new ModelMapper();
 
     @Override
     public Optional<User> findUserByEmail(String email) {
@@ -38,7 +39,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        var users = userRepository.findAll();
+        var users = userRepository.findAll(isUser());
         List<UserResponse> response =
                 users.stream()
                         .map(u -> mapper.map(u, UserResponse.class))
