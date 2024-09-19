@@ -2,22 +2,22 @@ services:
   eureka-server:
     image: eureka-server
     build:
-      context: .
-      dockerfile: eureka-server/Dockerfile
+      context: eureka-server
+      dockerfile: Dockerfile
 
   api-gateway:
     image: api-gateway
     build:
-      context: .
-      dockerfile: api-gateway/Dockerfile
+      context: api-gateway
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
 
   user-service:
     image: user-service
     build:
-      context: .
-      dockerfile: user-service/Dockerfile
+      context: user-service
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
       - api-gateway
@@ -25,8 +25,8 @@ services:
   product-catalog-service:
     image: product-catalog-service
     build:
-      context: .
-      dockerfile: product-catalog-service/Dockerfile
+      context: product-catalog-service/
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
       - api-gateway
@@ -34,8 +34,8 @@ services:
   order-processing-service:
     image: order-processing-service
     build:
-      context: .
-      dockerfile: order-processing-service/Dockerfile
+      context: order-processing-service
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
       - api-gateway
