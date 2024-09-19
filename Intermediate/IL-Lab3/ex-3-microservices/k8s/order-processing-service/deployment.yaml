@@ -21,6 +21,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8083
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
       restartPolicy: Always
 
 ---

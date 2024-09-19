@@ -19,6 +19,9 @@ spec:
         - name: product-catalog-service
           image: product-catalog-service
           imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
           ports:
             - containerPort: 8088
       restartPolicy: Always

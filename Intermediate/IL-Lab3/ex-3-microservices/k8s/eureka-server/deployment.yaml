@@ -19,6 +19,9 @@ spec:
         - name: eureka-server-container
           image: eureka-server
           imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
           ports:
             - containerPort: 8761
       restartPolicy: Always
@@ -32,5 +35,6 @@ spec:
   selector:
     app: eureka-server
   ports:
-    - port: 8761
+    - protocol: TCP
+      port: 8761
       targetPort: 8761

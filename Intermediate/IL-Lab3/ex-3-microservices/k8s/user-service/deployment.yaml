@@ -19,6 +19,9 @@ spec:
         - name: user-service-container
           image: user-service
           imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
           ports:
             - containerPort: 8081
       restartPolicy: Always
