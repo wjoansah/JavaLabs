@@ -43,7 +43,7 @@ pipeline {
         stage("build artifacts") {
             steps {
                 dir('Intermediate/IL-Lab3') {
-                    sh 'mvn clean install -DskipTests'
+                    sh 'mvn clean install -Dmaven.test.skip'
                 }
             }
             post {
