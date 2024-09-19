@@ -16,8 +16,11 @@ public class FizzBuzzSolution {
             System.out.println("Exiting...");
             System.exit(1);
         }
+        boolean isDivisibleBy3 = number % 3 == 0;
+        boolean isDivisibleBy5 = number % 5 == 0;
+        // 15
 
-        if (number % 3 == 0 && number % 5 == 0) {
+        if (isDivisibleBy3 && isDivisibleBy5) {
             System.out.println("FizzBuzz");
         } else if (number % 3 == 0) {
             System.out.println("Fizz");
@@ -26,6 +29,17 @@ public class FizzBuzzSolution {
         } else {
             System.out.println(number);
         }
+
+//        if (isDivisibleBy3) {
+//            System.out.println("Fizz");
+//        } else if (isDivisibleBy5) {
+//            System.out.println("Buzz");
+//        } else if (isDivisibleBy3 && isDivisibleBy5) {
+//            System.out.println("FizzBuzz");
+//        } else {
+//            System.out.println(number);
+//        }
+
 
         scanner.close();
     }
