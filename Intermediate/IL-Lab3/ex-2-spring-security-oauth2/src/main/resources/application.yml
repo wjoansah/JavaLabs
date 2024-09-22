@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: ex-2-spring-security-oauth2
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 
+            client-secret:
+
+  datasource:
+    url: jdbc:h2:mem:oauth2
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: 9090

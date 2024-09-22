@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: ex-1-spring-security-jwt-auth
+  datasource:
+    url: jdbc:h2:mem:jwt-auth
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console.enabled: true
+
+server:
+  port: 9090
+
+application:
+  admin:
+    name: admin
+    email: admin@jwt-auth.com
+    password: 
+  security:
+    jwt:
+      secret-key:
