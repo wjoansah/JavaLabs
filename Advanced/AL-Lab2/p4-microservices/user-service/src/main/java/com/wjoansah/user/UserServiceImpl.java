@@ -3,6 +3,8 @@ package com.wjoansah.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -30,5 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsUser(int id) {
         return userRepository.existsById(id);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
