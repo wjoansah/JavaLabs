@@ -1,0 +1,18 @@
+services:
+  user-service:
+    image: user-service
+    build:
+      context: user-service
+      dockerfile: Dockerfile
+
+  comment-service:
+    image: comment-service
+    build:
+      context: comment-service
+      dockerfile: Dockerfile
+
+  post-service:
+    image: post-service
+    build:
+      context: post-service
+      dockerfile: Dockerfile

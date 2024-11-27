@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: blog-user-service
+  datasource:
+    url: jdbc:h2:mem:blog_user_service_db
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console.enabled: true
+
+server:
+  port: 9090
+
+application:
+  admin:
+    name: admin
+    email: admin@jblog.com
+    password: password123
+  security:
+    jwt:
+      secret-key: HOgRPuDRutyQj86BS3aZh2

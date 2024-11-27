@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Data</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Optional for styling -->
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>Stock Details</h1>
+        <p th:if="${error}" th:text="${error}"></p> <!-- Display error if data is missing -->
+
+        <div th:if="${stockResponse != null and stockResponse.globalQuote != null}">
+            <p>Symbol: <span th:text="${stockResponse.globalQuote.symbol}">N/A</span></p>
+            <p>Price: <span th:text="${stockResponse.globalQuote.price}">N/A</span></p>
+        </div>
+        <p th:if="${stockResponse == null or stockResponse.globalQuote == null}">No stock data available.</p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "alphaVantage.apiKey",
+      "type": "java.lang.String",
+      "description": "Alpha Vantage API key"
+    },
+    {
+      "name": "alphaVantage.baseUrl",
+      "type": "java.lang.String",
+      "description": "Alpha Vantage base URL"
+    }
+  ]
+}

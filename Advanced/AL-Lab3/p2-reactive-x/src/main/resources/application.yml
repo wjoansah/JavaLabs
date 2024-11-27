@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: reactive-stock-app
+
+server:
+  port: 8088
+
+alphaVantage:
+  baseUrl: https://www.alphavantage.co
+  apiKey: 6KAG3EI8WATLYQ9K
