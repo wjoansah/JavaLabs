@@ -1,0 +1,105 @@
+def projectDirParent = 'Advanced/AL-Lab4/'
+def projectDir = 'p2-jenkins-cicd'
+def dockerImageName = 'p2-jenkins'
+def dockerImageTag = 'latest'
+
+pipeline {
+    agent any
+    tools {
+        maven "maven"
+    }
+
+    stages {
+        // get source from repo*
+        stage("checkout code from vcs") {
+            steps {
+                checkout scmGit(
+                        branches: [[name: 'main']],
+                        extensions: [
+                                sparseCheckout(sparseCheckoutPaths:
+                                [[path: '${projectDirParent}/${projectDir}'],
+                                [path: '${projectDirParent}/pom.xml']])
+                        ],
+                        userRemoteConfigs: [[url: 'https://github.com/wjoansah/JavaLabs.git']])
+            }
+        }
+        // run tests
+        stage("run tests") {
+            steps {
+                dir('${projectDirParent}') {
+                    sh 'mvn clean test'
+                }
+            }
+            post {
+                success {
+                    echo "[tests]: successfully run all tests."
+                }
+                failure {
+                    echo "[tests]: tests run failed."
+                }
+            }
+        }
+
+        // build artifacts
+        stage("build artifacts") {
+            steps {
+                dir('${projectDirParent}') {
+                    sh 'mvn clean install -Dmaven.test.skip'
+                }
+            }
+            post {
+                success {
+                    echo "[artifacts-build]: successfully built artifacts."
+                }
+                failure {
+                    echo "[artifacts-build]: failed to build artifacts."
+                }
+            }
+        }
+
+        // build docker images
+        stage("build docker image") {
+            steps {
+                dir('${projectDirParent}/${projectDir}') {
+                    script {
+                        sh "docker build -t ${dockerImageName} ."
+                    }
+                }
+            }
+            post {
+                success {
+                    echo "[docker-build]: successfully built docker image."
+                }
+                failure {
+                    echo "[docker-build]: failed to build docker image."
+                }
+            }
+        }
+
+         stage('Push Docker Image') {
+            steps {
+                script{
+                    dir('${projectDirParent}/${projectDir}') {
+                        withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                            sh "docker push ${dockerImageName}"
+                        }
+                   }
+                }
+            }
+            post {
+                success {
+                    echo "[docker-push]: successfully pushed docker image."
+                }
+                failure {
+                    echo "[docker-push]: failed to push docker image."
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
