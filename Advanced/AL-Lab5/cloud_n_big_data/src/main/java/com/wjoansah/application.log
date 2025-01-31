@@ -1,0 +1,6 @@
+2025-01-31 10:00:01.123 TRACE 12345 --- [  main] c.example.service.PaymentService        : Entering processPayment() with amount=100.00, userId=5678
+2025-01-31 10:00:02.456 DEBUG 12345 --- [  main] c.example.service.PaymentService        : Validating payment details for userId=5678
+2025-01-31 10:00:03.789 INFO  12345 --- [  main] c.example.service.PaymentService        : Payment processing started for userId=5678, amount=100.00
+2025-01-31 10:00:04.321 WARN  12345 --- [  main] c.example.service.PaymentValidator      : Expiry date is close to expiry for userId=5678
+2025-01-31 10:00:05.654 ERROR 12345 --- [  main] c.example.service.PaymentService        : Payment processing failed for userId=5678, amount=100.00 due to Insufficient Balance
+2025-01-31 10:00:06.987 TRACE 12345 --- [  main] c.example.controller.PaymentController  : Exiting processPayment() with response=FAILURE
